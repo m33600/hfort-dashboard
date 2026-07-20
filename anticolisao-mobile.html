@@ -673,14 +673,14 @@ footer a { color: var(--ink-soft); }
 .stepper-row .case-field { flex: 1 1 0; min-width: 0; }
 .stepper {
   display: flex;
-  align-items: stretch;
+  flex-direction: column;
   gap: 6px;
 }
-.stepper .unit-input { flex: 1 1 auto; min-width: 0; }
+.stepper .unit-input { width: 100%; }
 .stepper .unit-input input[type="number"] {
   width: 100%;
   text-align: center;
-  padding: 8px 2px;
+  padding: 10px 2px;
   /* esconde as setas nativas do number, que ficam minusculas/inconsistentes no celular */
   -moz-appearance: textfield;
 }
@@ -689,8 +689,14 @@ footer a { color: var(--ink-soft); }
   -webkit-appearance: none;
   margin: 0;
 }
+.step-buttons {
+  display: flex;
+  gap: 6px;
+}
 .step-btn {
-  flex: 0 0 44px;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 44px;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 1.3rem;
   line-height: 1;
@@ -718,23 +724,27 @@ footer a { color: var(--ink-soft); }
         <div class="case-field">
           <label for="in-teto">Teto</label>
           <div class="stepper">
-            <button type="button" class="step-btn" data-target="in-teto" data-dir="-1" aria-label="Diminuir teto">−</button>
             <div class="unit-input">
               <input type="number" id="in-teto" value="6.0" min="1.8" max="8.54" step="0.1" inputmode="decimal"/>
               <span class="unit-suffix">m</span>
             </div>
-            <button type="button" class="step-btn" data-target="in-teto" data-dir="1" aria-label="Aumentar teto">+</button>
+            <div class="step-buttons">
+              <button type="button" class="step-btn" data-target="in-teto" data-dir="-1" aria-label="Diminuir teto">−</button>
+              <button type="button" class="step-btn" data-target="in-teto" data-dir="1" aria-label="Aumentar teto">+</button>
+            </div>
           </div>
         </div>
         <div class="case-field">
           <label for="in-margem">Margem</label>
           <div class="stepper">
-            <button type="button" class="step-btn" data-target="in-margem" data-dir="-1" aria-label="Diminuir margem">−</button>
             <div class="unit-input">
               <input type="number" id="in-margem" value="1.0" min="0" max="10" step="0.1" inputmode="decimal"/>
               <span class="unit-suffix">m</span>
             </div>
-            <button type="button" class="step-btn" data-target="in-margem" data-dir="1" aria-label="Aumentar margem">+</button>
+            <div class="step-buttons">
+              <button type="button" class="step-btn" data-target="in-margem" data-dir="-1" aria-label="Diminuir margem">−</button>
+              <button type="button" class="step-btn" data-target="in-margem" data-dir="1" aria-label="Aumentar margem">+</button>
+            </div>
           </div>
         </div>
       </div>
@@ -787,8 +797,8 @@ footer a { color: var(--ink-soft); }
       <line id="live-mark-line" class="live-mark-line"/>
 
       <!-- modelo + dimensoes fisicas -->
-      <rect x="4" y="4" width="220" height="32" style="fill:var(--paper)"/>
-      <text id="live-model-label" class="live-model-label" x="16" y="26" text-anchor="start">HFORT 8800LI</text>
+      <rect x="4" y="-16" width="220" height="32" style="fill:var(--paper)"/>
+      <text id="live-model-label" class="live-model-label" x="16" y="6" text-anchor="start">HFORT 8800LI</text>
 
       <foreignObject x="16" y="620" width="468" height="70">
         <div xmlns="http://www.w3.org/1999/xhtml" class="case-finding live-finding-box" id="case-finding-text"></div>
