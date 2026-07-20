@@ -707,14 +707,14 @@ footer a { color: var(--ink-soft); }
       <span class="cc-note" id="case-warning"></span>
     </div>
 
-    <svg id="live-svg" class="diagram-svg" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animacao ao vivo mostrando o braco e a lanca da grua varrendo o limite de alarme">
-      <rect x="0" y="0" width="900" height="520" fill="url(#grid)"/>
-      <line id="live-ground" class="ground" x1="30" x2="870"/>
-      <line id="live-ceil" class="live-ceil" x1="30" x2="870"/>
-      <text id="live-ceil-label" class="live-ceil-label" x="36">TETO</text>
-      <line id="live-limit" class="live-limit" x1="30" x2="870" stroke-dasharray="9 7"/>
-      <text id="live-limit-label" class="live-limit-label" x="36">LIMITE DE ALARME</text>
-      <rect id="live-column" class="footing" x="623" width="54"/>
+    <svg id="live-svg" class="diagram-svg" viewBox="0 0 500 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animacao ao vivo mostrando o braco e a lanca da grua varrendo o limite de alarme">
+      <rect x="0" y="0" width="500" height="700" fill="url(#grid)"/>
+      <line id="live-ground" class="ground" x1="16" x2="484"/>
+      <line id="live-ceil" class="live-ceil" x1="16" x2="484"/>
+      <text id="live-ceil-label" class="live-ceil-label" x="16">TETO</text>
+      <line id="live-limit" class="live-limit" x1="16" x2="484" stroke-dasharray="9 7"/>
+      <text id="live-limit-label" class="live-limit-label" x="16">LIMITE DE ALARME</text>
+      <rect id="live-column" class="footing" x="423" width="54"/>
 
       <!-- transferidor theta1 (fixo no pivo) -->
       <line id="live-t1-ref" class="protractor-ref"/>
@@ -743,16 +743,16 @@ footer a { color: var(--ink-soft); }
       <line id="live-mark-line" class="live-mark-line"/>
 
       <!-- modelo + dimensoes fisicas -->
-      <text id="live-model-label" class="live-model-label" x="30" y="38" text-anchor="start">HFORT 8800LI</text>
+      <text id="live-model-label" class="live-model-label" x="16" y="26" text-anchor="start">HFORT 8800LI</text>
 
-      <foreignObject x="24" y="348" width="340" height="132">
+      <foreignObject x="16" y="620" width="468" height="70">
         <div xmlns="http://www.w3.org/1999/xhtml" class="case-finding live-finding-box" id="case-finding-text"></div>
       </foreignObject>
       <text id="live-dim-col" class="live-dim-label" text-anchor="middle"></text>
       <text id="live-dim-boom" class="live-dim-label" text-anchor="end"></text>
       <text id="live-dim-arm" class="live-dim-label" text-anchor="middle"></text>
 
-      <text id="live-readout" class="live-readout" x="864" y="34" text-anchor="end"></text>
+      <text id="live-readout" class="live-readout" x="484" y="26" text-anchor="end"></text>
     </svg>
   </div>
 
@@ -837,7 +837,7 @@ footer a { color: var(--ink-soft); }
 
   // ---- animacao ao vivo ----
   var live = {
-    teto: 6, margem: 1, limite: 5, scale: 60, groundY: 480, pivotX: 650,
+    teto: 6, margem: 1, limite: 5, scale: 60, groundY: 610, pivotX: 450,
     modelKey: '8800li', modelName: '8800LI', L0: 1.77, L1: 3.975, L2: 2.795
   };
 
@@ -862,11 +862,11 @@ footer a { color: var(--ink-soft); }
   }
 
   function layoutLive() {
-    var topMargin = 40;
+    var topMargin = 30;
     var available = live.groundY - topMargin;
     // escala global fixa (baseada no maior modelo do catalogo) + 20% de aumento — nunca recalculada
     // por modelo ou por teto, so o chao desceu e o desenho cresceu como um todo
-    live.scale = (available / (GLOBAL_MAX_REACH * 1.15)) * 1.2;
+    live.scale = (available / (GLOBAL_MAX_REACH * 1.15)) * 1.1;
 
     var ceilY = live.groundY - live.teto * live.scale;
     var limitY = live.groundY - live.limite * live.scale;
