@@ -664,8 +664,42 @@ footer a { color: var(--ink-soft); }
 }
 .case-controls { flex-direction: column; align-items: stretch; gap: 14px; }
 .case-controls .case-field { width: 100%; }
-.case-controls .unit-input { width: 100%; }
 .case-controls select { width: 100%; }
+
+.stepper-row {
+  display: flex;
+  gap: 12px;
+}
+.stepper-row .case-field { flex: 1 1 0; min-width: 0; }
+.stepper {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+.stepper .unit-input { flex: 1 1 auto; min-width: 0; }
+.stepper .unit-input input[type="number"] {
+  width: 100%;
+  text-align: center;
+  padding: 8px 2px;
+  /* esconde as setas nativas do number, que ficam minusculas/inconsistentes no celular */
+  -moz-appearance: textfield;
+}
+.stepper .unit-input input[type="number"]::-webkit-inner-spin-button,
+.stepper .unit-input input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.step-btn {
+  flex: 0 0 44px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--ink);
+  background: var(--card-bg);
+  border: 1px solid var(--line-strong);
+  cursor: pointer;
+}
+.step-btn:active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 
 </style>
 
@@ -680,18 +714,28 @@ footer a { color: var(--ink-soft); }
     <p class="section-note" style="margin-bottom:16px;">Varre θ2 continuamente, sempre com θ1 no limite exato (cotovelo ou ponta). Ajuste os campos abaixo e a animação reage na hora.</p>
 
     <div class="case-controls">
-      <div class="case-field">
-        <label for="in-teto">Altura do teto</label>
-        <div class="unit-input">
-          <input type="number" id="in-teto" value="6.0" min="1.8" max="8.54" step="0.1"/>
-          <span class="unit-suffix">m</span>
+      <div class="stepper-row">
+        <div class="case-field">
+          <label for="in-teto">Teto</label>
+          <div class="stepper">
+            <button type="button" class="step-btn" data-target="in-teto" data-dir="-1" aria-label="Diminuir teto">−</button>
+            <div class="unit-input">
+              <input type="number" id="in-teto" value="6.0" min="1.8" max="8.54" step="0.1" inputmode="decimal"/>
+              <span class="unit-suffix">m</span>
+            </div>
+            <button type="button" class="step-btn" data-target="in-teto" data-dir="1" aria-label="Aumentar teto">+</button>
+          </div>
         </div>
-      </div>
-      <div class="case-field">
-        <label for="in-margem">Margem de segurança</label>
-        <div class="unit-input">
-          <input type="number" id="in-margem" value="1.0" min="0" max="10" step="0.1"/>
-          <span class="unit-suffix">m</span>
+        <div class="case-field">
+          <label for="in-margem">Margem</label>
+          <div class="stepper">
+            <button type="button" class="step-btn" data-target="in-margem" data-dir="-1" aria-label="Diminuir margem">−</button>
+            <div class="unit-input">
+              <input type="number" id="in-margem" value="1.0" min="0" max="10" step="0.1" inputmode="decimal"/>
+              <span class="unit-suffix">m</span>
+            </div>
+            <button type="button" class="step-btn" data-target="in-margem" data-dir="1" aria-label="Aumentar margem">+</button>
+          </div>
         </div>
       </div>
       <div class="case-field">
@@ -1016,6 +1060,21 @@ footer a { color: var(--ink-soft); }
   document.getElementById('in-margem').addEventListener('input', render);
   document.getElementById('in-model').addEventListener('change', function (e) {
     applyModel(e.target.value);
+  });
+
+  document.querySelectorAll('.step-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var input = document.getElementById(btn.getAttribute('data-target'));
+      var dir = parseFloat(btn.getAttribute('data-dir'));
+      var step = parseFloat(input.getAttribute('step')) || 1;
+      var min = parseFloat(input.getAttribute('min'));
+      var max = parseFloat(input.getAttribute('max'));
+      var val = (parseFloat(input.value) || 0) + dir * step;
+      if (!isNaN(min)) val = Math.max(min, val);
+      if (!isNaN(max)) val = Math.min(max, val);
+      input.value = val.toFixed(1);
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
   });
 
   applyModel(live.modelKey);
